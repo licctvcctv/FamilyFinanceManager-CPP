@@ -41,6 +41,13 @@ set(HEADERS
 # 创建可执行文件
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
+# 统一使用 UTF-8 源码/执行字符集，避免中文输出乱码
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8)
+endif()
+
 # Windows特定设置
 if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)

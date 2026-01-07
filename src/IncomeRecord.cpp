@@ -2,6 +2,8 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+#include <vector>
+#include <string>
 
 // 默认构造函数
 IncomeRecord::IncomeRecord() : Record(), source("") {

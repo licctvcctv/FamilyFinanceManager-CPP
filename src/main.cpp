@@ -1,5 +1,6 @@
 #include <iostream>
 #include <locale>
+#include <exception>
 #include "FinanceManager.h"
 #include "MenuSystem.h"
 #include "DisplayHelper.h"
@@ -10,15 +11,20 @@
 
 void initConsole() {
 #ifdef _WIN32
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwMode = 0;
-    GetConsoleMode(hOut, &dwMode);
-    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, dwMode);
+    if (GetConsoleMode(hOut, &dwMode)) {
+        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, dwMode);
+    }
 #endif
-    std::locale::global(std::locale(""));
+    try {
+        std::locale::global(std::locale(".UTF-8"));
+    } catch (const std::exception&) {
+        std::locale::global(std::locale(""));
+    }
 }
 
 void showWelcome() {
